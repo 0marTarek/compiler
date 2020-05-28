@@ -1,0 +1,11 @@
+int main() {
+int x = 2 ;
+int y = 20 ;
+x = y ;
+char w = "omar" ;
+y = x ;
+char qq ;
+int yyyyyyy ;
+char a123 
+int a1a1 ;
+}
