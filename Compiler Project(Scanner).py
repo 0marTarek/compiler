@@ -34,7 +34,7 @@ def Scanner():
         #print(f.read())
         for line in file:
             for word in line.split():
-                if word == '//' or word == '#' or word == '/*' or word == '*':
+                if word == '//' or word == '#' or word == '/*' or word == '*/':
                     break
                 elif word in Functions:
                     Tokens.update({'Function' + ' ' + str(fun_counter): word})
@@ -63,7 +63,7 @@ def Scanner():
             Tokens.update({'Keyword'    + ' ' + str(key_counter)    : word})
             key_counter    += 1
         elif(word in DataTypes):
-            Tokens.update({'DataType'    + ' ' + str(data_counter)  : word})
+            Tokens.update({'DataType'   + ' ' + str(data_counter)  : word})
             data_counter    += 1
         elif(word in Assignment):
             Tokens.update({'Assignment' + ' ' + str(Assign_counter) : word})
@@ -96,3 +96,4 @@ def Is_identifier (word):
             valid = True
     return valid
     
+Scanner()
