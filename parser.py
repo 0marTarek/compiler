@@ -1,3 +1,4 @@
+import Scanner as s
 letter = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 digits = "0123456789"
 others = "@#$%_"
@@ -5,11 +6,49 @@ reserved_words = "if int float char"
 class parser:
     def __init__(self, token_list, dict):
         self.indx = 0
-        self.word = None
+        
+        token_list.append("EOF")
         self.token_list = token_list
-        self.dec = "int float char"
+        self.dec = ["int", "float", "char"]
         self.temp_identifier = None
         self.variables = dict
+        self.Current_Line = 0
+        self.word = self.token_list[self.indx]
+        print("###################################################")
+        print("Parser result")
+        print("###################################################")
+        
+    def run(self):
+        #self.check_index()
+        error = 0
+        while self.word !="EOF" :
+            
+            if self.word == "int" or self.word == "float" or self.word == "char" or self.word in self.variables.keys():
+                if self.Dec_Syntax() :
+                    pass
+                else:
+                    error = 1
+                    print("Expected in Line: ", self.Current_Line)
+                    break
+
+            elif self.word in "\n}" or self.word in "EOF":
+                pass
+             
+            else:
+                print("Unknown word: '{}' in Line: '{}'".format(self.word,self.Current_Line +1))
+                error = 1
+                break
+            self.check_index()
+
+        if error != 1:
+            temp = self.token_list[-3]
+            if temp != "}" :
+                print("Expected '}' for main" +  " Expected in Line: '{}'.".format(self.Current_Line ))
+                error = 1
+            else:
+                print("Compiled successfully. 0 Errors")
+            
+                    
 
     #increasing the index and get the next token
     def check_index(self):
@@ -17,7 +56,21 @@ class parser:
         if self.indx >= len(self.token_list) :
             return True
         self.word = self.token_list[self.indx]
+        if self.word == "\n":
+            self.Current_Line += 1
+        
         return False
+
+    def identifyMainFunction(self):
+        if self.check_index() :
+            print("Expected {")
+            return False
+        else:   
+            if self.word == "{":
+               return True
+            else:
+                print("Missing {")
+                return False
 
     #declearation grammer rule
     def Dec_Syntax(self):
@@ -28,6 +81,12 @@ class parser:
                 print("Expected variable name.")
                 return False
             else:
+                #for main
+                if self.word in "main() main ()":
+                    if self.identifyMainFunction() :
+                        return True
+                    else:
+                        return False
                 if self.identifier(self.word) :
                     self.temp_identifier = self.word
                     if self.check_index():
@@ -37,7 +96,7 @@ class parser:
                         if self.word == ";": 
                             self.variables[self.temp_identifier] = keyword
                             self.temp_identifier = None
-                            print ("Valid syntax without assignment.") 
+                            #print ("Valid syntax without assignment.") 
                             return True 
                         elif self.word == "=": 
                             if self.check_index() :
@@ -48,7 +107,7 @@ class parser:
                                 if  res_value == "accepted":
                                     self.variables[self.temp_identifier] = keyword
                                     self.temp_identifier = None
-                                    print("Valid syntax and assignment.")
+                                    #print("Valid syntax and assignment.")
                                     if self.check_index() :
                                         print("Missing Simicolon ';'.")
                                         return False
@@ -62,10 +121,9 @@ class parser:
                                     print(res_value)
                                     return False
                         else:
-                            print("Bad syntax expected simicolon or '=' " )
+                            print("Bad syntax expected ';' or '=' ")
                             return False
                 else:
-                    print("Bad variable name.")
                     return False
 
         #Assignment without declearation.
@@ -88,7 +146,7 @@ class parser:
                                     return False
                                 else:
                                     if self.word == ";":
-                                        print("Accepted operation, two variables have the same datatype.")
+                                        #print("Accepted operation, two variables have the same datatype.")
                                         return True
                                     else:
                                         print("Missing Simicolon ';'.")
@@ -96,7 +154,7 @@ class parser:
 
 
                             else:
-                                print("Error, Different Datatypes " + self.variables[self.temp_identifier] + " and " + self.variables[self.word])
+                                print("Different Datatypes " + self.variables[self.temp_identifier] + " and " + self.variables[self.word])
                         else:
                             res_value = self.keyword_value_identify(self.variables[self.temp_identifier], self.word)
                             if  res_value == "accepted":
@@ -105,7 +163,7 @@ class parser:
                                     return False
                                 else:
                                     if self.word == ";":
-                                        print("Valid assignment without decleration.")
+                                        #print("Valid assignment without decleration.")
                                         return True
                                     else:
                                         print("Missing Simicolon ';'.")
@@ -114,7 +172,7 @@ class parser:
                                 print(res_value)
                                 return False
                 else:
-                    print('expected assignment operator"=".')
+                    print('Expected "=".')
                     return False
 
 
@@ -159,17 +217,19 @@ class parser:
                     indx +=1
                     if indx < len(text):
                         current_char = text[indx]
-                    return True
+                    else:
+                        break
                 else:
-                    print("variable name can only be letters or numbers.")
+                    print("variable name can only be letters or numbers. can't contain '{}'".format(current_char))
                     return False
         else:
             if text in reserved_words:
-                print("identifier name can't from reserved words.")
+                print("'{}' is a reserved word, Identifier can't be from reserved words.".format(text))
                 return False
 
             print("varible must start with letter")
             return False
+        return True
 
 
     def CheckExpresion(self):
@@ -211,20 +271,20 @@ class Stack:
         else:
             print('Expression is not correctly parenthesized.')		
     
+
         
 
 def main():
-    q = ["x", "=", "y", ";" ]
-    dict = {"x":"float",
-            "y":"int"
-            }
-    p = parser(q, dict)
-    x = p.Dec_Syntax()
-    print("Declearation Result is: " , x)
-    print(p.variables)
+    q = ["x", "=", "y",";" ]
+    dict = {}
+    tokens = s.Scanner()
+    p = parser(tokens, dict)
+    x = p.run()
+
+    #print(p.variables)
 	
-    exp = input('Please enter the expression: ')
-    Stack.checkExpression(exp)
+  #  exp = input('Please enter the expression: ')
+ #   Stack.checkExpression(exp)
 
 
 

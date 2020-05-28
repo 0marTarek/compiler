@@ -45,7 +45,7 @@ def Scanner():
             print("Line {}   : {}".format(count, line.strip()))
     else:
         print("File Not Found , Maybe A Wrong Path")
-    #print(Words)
+    print(Words)
     print('##############################################')
     id_counter     = 0
     key_counter    = 0
@@ -85,6 +85,8 @@ def Scanner():
             dig_counter    += 1
     for keys,values in Tokens.items():
         print(values + ' ' + keys)
+
+    return Words
         
 
 def Is_identifier (word):
@@ -96,3 +98,4 @@ def Is_identifier (word):
             valid = True
     return valid
     
+
