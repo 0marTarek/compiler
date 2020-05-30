@@ -190,7 +190,57 @@ class parser:
 
         else:
             print("Expected int, float, char.")
+            return False
+  
+
+
+    def CheckParenthes(self,exp):
+        s = Stack()
+        for c in exp:
+            if c == '(':
+                s.push(1)
+            elif c == ')':
+                if s.is_empty():
+                    is_balanced = False
+                    break
+                s.pop()    
+        else:
+            if s.is_empty():
+                is_balanced = True
+            else:
+                is_balanced = False
+        
+        if is_balanced:
+            print('Expression is correctly parenthesized.')
+        else:
+            print('Expression is not correctly parenthesized.')
+
+
+        
+    def CheckExpresion(self):
+        if self.check_index():  
+            print("Not Valid Expression")
             return False    
+        elif self.word in digits:
+            if self.check_index():  
+                print("Not Complete Expression")
+                return False
+            else:
+                while(self.word in operations):
+                    if self.check_index():  
+                        print("Not Valid Expression")
+                        return False
+                    elif self.word in digits:
+                        if self.check_index():
+                            break
+                              
+                print("Valid Expression")
+                
+        else:
+            print("expression must start with number")
+
+
+            
 
     #chech that the keyword have its right value. 
     def keyword_value_identify(self, keyword, value):
