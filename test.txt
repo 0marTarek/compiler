@@ -1,11 +1,22 @@
 int main() {
+int x = 10 ;
+int y ;
+
+if (  x < 10 ) 
+{
+x = 10 ;
+}
+else
+{
+	int d = 60 ;
+}
+
+int a = 20 ;
 int x = 2 ;
-int y = 20 ;
-x = y ;
-char w = "omar" ;
-y = x ;
+int y = 123 ;
 char qq ;
 int yyyyyyy ;
-char a123 
+char a ;
 int a1a1 ;
+
 }

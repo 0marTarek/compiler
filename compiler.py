@@ -230,7 +230,6 @@ class parser:
                             else:
                                 print(res_value)
                                 return False
-            
                 else:
                     print('Syntax Error: Expected "=".')
                     return False
@@ -417,7 +416,7 @@ class parser:
             else :
                 return True
         else :
-            if self.word not in self.variables.keys():
+            if self.word not in self.variables.keys()
                 print ("Systax Error: Unknow word: '{}' is not defined. ".format(self.word))
                 return False
             if self.word.isnumeric():
