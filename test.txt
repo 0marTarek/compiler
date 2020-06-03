@@ -2,15 +2,18 @@ int main() {
 int x = 10 ;
 int y ;
 
-if (  x < 10 ) 
+if (   x < 10 ) 
 {
+
 x = 10 ;
 }
-else
+else if ( 5 > 4 )
 {
 	int d = 60 ;
 }
-
+else {
+int y = 70 ;
+}
 int a = 20 ;
 int x = 2 ;
 int y = 123 ;

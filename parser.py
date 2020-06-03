@@ -63,9 +63,11 @@ class parser:
                         self.if_count -=1
                     else:
                         error = 1
+                        print("Syntax Error: in 'else' in line: ", str(self.Current_Line))
                         break
                 else:
                     error = 1
+                    print("Syntax Error: in 'else' in line: ", str(self.Current_Line))
                     break  
             elif self.word == "{":
                 self.K_B.append ('{')
@@ -470,6 +472,7 @@ class parser:
                 return True
             else :
                 if self.word == "if" :
+                    self.if_count +=1
                     if self.IF_DEC () :
                         if self.check_index() :
                             return True
